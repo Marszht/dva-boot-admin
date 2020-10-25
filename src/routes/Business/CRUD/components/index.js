@@ -23,6 +23,15 @@ export default class extends BaseComponent {
     rows: []
   };
 
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'crud/getPageInfo'
+    });
+    this.props.dispatch({
+      type: 'curd/getEmployees'
+    })
+  }
+
   handleDelete = records => {
     const { rows } = this.state;
 
@@ -45,8 +54,10 @@ export default class extends BaseComponent {
   render() {
     const { crud, loading, dispatch } = this.props;
     const { pageData, employees } = crud;
-    const columns = createColumns(this, employees);
+    // FIXME: 可以传record 过去然后去
     const { rows, record, visible } = this.state;
+    const columns = createColumns(this, employees, record);
+    console.log({record});
 
     const searchBarProps = {
       columns,

@@ -177,7 +177,8 @@ class FormComp extends React.Component {
     let ComponentCol = type === 'inline' ? PlainComp : Col;
     let ComponentItem = Form.Item;
 
-    let formFields = columns.filter(col => col.formItem);
+    let formFields = columns.filter(col => col.formItem).filter(item => item.formItemShow !== false)
+    console.log({formFields})
     formFields = group
       ? formFields.filter(col => col.formItem && col.formItem.group === group)
       : formFields;

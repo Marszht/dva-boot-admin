@@ -14,42 +14,43 @@ export default modelEnhance({
     employees: []
   },
 
-  subscriptions: {
-    setup({ dispatch, history }) {
-      history.listen(({ pathname }) => {
-        if (pathname === '/crud' && !LOADED) {
-          LOADED = true;
-          dispatch({
-            type: 'init'
-          });
-        }
-      });
-    }
-  },
+  // FIXME: 不用这个去做初始化请求，页面DOM 结构还没出来
+  // subscriptions: {
+  //   setup({ dispatch, history }) {
+  //     history.listen(({ pathname }) => {
+  //       if (pathname === '/crud' && !LOADED) {
+  //         LOADED = true;
+  //         dispatch({
+  //           type: 'init'
+  //         });
+  //       }
+  //     });
+  //   }
+  // },
 
   effects: {
-    // 进入页面加载
-    *init({ payload }, { call, put, select }) {
-      const { pageData } = yield select(state => state.crud);
-      yield put({
-        type: 'getPageInfo',
-        payload: {
-          pageData: pageData.startPage(1, 10)
-        }
-      });
-      yield put({
-        type: 'getEmployees'
-      });
-    },
+    // 进入页面加载 FIXME: 就用这个初始化 effects
+    // *init({ payload }, { call, put, select }) {
+    //   const { pageData } = yield select(state => state.crud);
+    //   yield put({
+    //     type: 'getPageInfo',
+    //     payload: {
+    //       pageData: pageData.startPage(1, 10)
+    //     }
+    //   });
+    //   yield put({
+    //     type: 'getEmployees'
+    //   });
+    // },
     // 获取分页数据
-    *getPageInfo({ payload }, { call, put }) {
-      const { pageData } = payload;
+    *getPageInfo({ payload }, { call, put, select }) {
+      const { pageData } = yield select(state => state.crud);
       yield put({
         type: '@request',
         payload: {
           valueField: 'pageData',
           url: '/crud/getList',
-          pageInfo: pageData
+          pageInfo: pageData.startPage(1, 10)
         }
       });
     },

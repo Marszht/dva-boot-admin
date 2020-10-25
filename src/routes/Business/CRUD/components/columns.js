@@ -5,7 +5,7 @@ import Button from 'components/Button';
 import { router } from 'dva';
 const { Link } = router;
 
-export default (self, employees) => [
+export default (self, employees, record) => [
   {
     title: '单位名称',
     name: 'deptName',
@@ -21,8 +21,9 @@ export default (self, employees) => [
     dict: [{ code: '0', codeName: '城市' }, { code: '1', codeName: '乡村' }],
     tableItem: {},
     formItem: {
-      type: 'select'
+      type: 'select',
     },
+    formItemShow: !!(record && record.distributionNetwork === '0'),
     searchItem: {
       type: 'select'
     }
